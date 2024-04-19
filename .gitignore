@@ -40,3 +40,9 @@ yarn-error.log*
 
 # typescript
 *.tsbuildinfo
+
+# graphql
+/src/graphql/generated.ts
+
+# yarn
+yarn.lock
