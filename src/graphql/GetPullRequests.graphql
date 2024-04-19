@@ -1,4 +1,4 @@
-query SearchGithub(
+query GetPullRequests(
   $owner: String!
   $name: String!
   $states: [PullRequestState!] = [OPEN, MERGED]
@@ -30,6 +30,7 @@ query SearchGithub(
               __typename
               requestedReviewer {
                 ... on User {
+                  __typename
                   login
                 }
               }

@@ -30,11 +30,13 @@ export const PRListContainer = () => {
         <thead>
           <tr>
             <th>PR</th>
-            <th>Assigner</th>
+            <th>State</th>
             <th>Comments</th>
-            {/* <th>Created At</th> */}
-            {/* <th>User</th> */}
-            {/* <th>Requested Reviewers</th> */}
+            <th>Assigner</th>
+            <th>Requested</th>
+            <th>Approved</th>
+            <th>Created At</th>
+            <th>Merged At</th>
           </tr>
         </thead>
         <tbody>
@@ -51,8 +53,28 @@ export const PRListContainer = () => {
                     {pr.title}
                   </a>
                 </td>
-                <td>{pr.author?.login}</td>
+                <th>{pr.state}</th>
                 <td>{pr.totalCommentsCount}</td>
+                <td>{pr.author?.login}</td>
+                <td>
+                  {pr.timelineItems?.nodes
+                    ?.map((node) =>
+                      node?.__typename === "ReviewRequestedEvent" &&
+                      node.requestedReviewer?.__typename === "User"
+                        ? node.requestedReviewer?.login
+                        : null,
+                    )
+                    .filter(Boolean)
+                    .join(", ")}
+                </td>
+                <td>
+                  {pr.reviews?.nodes
+                    ?.map((node) => node?.author?.login)
+                    .filter(Boolean)
+                    .join(", ")}
+                </td>
+                <td>{pr.createdAt}</td>
+                <td>{pr.mergedAt}</td>
               </tr>
             );
           })}

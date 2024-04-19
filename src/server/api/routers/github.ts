@@ -1,7 +1,7 @@
 import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
 import { z } from "zod";
 import request from "graphql-request";
-import { PullRequestState, SearchGithubDocument } from "@/graphql/generated";
+import { PullRequestState, GetPullRequestsDocument } from "@/graphql/generated";
 
 const getRequestHeaders = () => ({
   Authorization: `Bearer ${process.env.GITHUB_TOKEN}`,
@@ -32,7 +32,7 @@ export const githubRouter = createTRPCRouter({
       const { owner, repo, perPage, states, cursor } = input;
       const result = await request(
         process.env.NEXT_PUBLIC_APP_API_URL ?? "",
-        SearchGithubDocument,
+        GetPullRequestsDocument,
         {
           owner,
           name: repo,

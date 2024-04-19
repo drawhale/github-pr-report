@@ -9,7 +9,6 @@ const config: CodegenConfig = {
     },
   },
   config: {
-    skipTypename: true,
     headers: {
       Authorization: `Bearer ${process.env.GITHUB_TOKEN}`,
       "User-Agent": "Github PR Report",
