@@ -13,40 +13,7 @@ query GetPullRequests(
       orderBy: { field: CREATED_AT, direction: DESC }
     ) {
       nodes {
-        id
-        title
-        url
-        state
-        createdAt
-        mergedAt
-        author {
-          login
-        }
-        totalCommentsCount
-
-        timelineItems(last: 10, itemTypes: [REVIEW_REQUESTED_EVENT]) {
-          nodes {
-            ... on ReviewRequestedEvent {
-              __typename
-              requestedReviewer {
-                ... on User {
-                  __typename
-                  login
-                }
-              }
-            }
-          }
-        }
-
-        reviews(last: 10, states: [APPROVED]) {
-          nodes {
-            author {
-              login
-            }
-            state
-            createdAt
-          }
-        }
+        ...PullRequest
       }
 
       pageInfo {
