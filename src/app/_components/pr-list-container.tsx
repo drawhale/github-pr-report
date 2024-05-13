@@ -5,8 +5,8 @@ import { api } from "@/trpc/react";
 import { PRReport } from "./pr-report";
 import { PRList } from "./pr-list";
 
-const ownerName = "vetching-corporation";
-const repoName = "plus-vet";
+const ownerName = "";
+const repoName = "";
 
 export const PRListContainer = () => {
   const { data, fetchNextPage } = api.github.getPRList.useInfiniteQuery(
