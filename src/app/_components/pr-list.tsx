@@ -83,7 +83,7 @@ const Th = ({
 }: React.PropsWithChildren<{ width?: number }>) => {
   return (
     <div
-      className="text-center text-lg text-gray-500"
+      className="text-center text-base text-gray-500"
       style={{ width, flex: width === undefined ? 1 : undefined }}
     >
       {children}
@@ -101,7 +101,7 @@ const Td = ({
 }>) => {
   return (
     <div
-      className="text-left text-lg text-gray-300"
+      className="text-left text-base text-gray-300"
       style={{
         width,
         flex: width === undefined ? 1 : undefined,

@@ -4,26 +4,27 @@ import { PullRequestState } from "@/graphql/generated";
 import { api } from "@/trpc/react";
 import { PRReport } from "./pr-report";
 import { PRList } from "./pr-list";
+import clsx from "clsx";
 
 const ownerName = "";
 const repoName = "";
 
 export const PRListContainer = () => {
-  const { data, fetchNextPage } = api.github.getPRList.useInfiniteQuery(
-    {
-      owner: ownerName,
-      repo: repoName,
-      states: [PullRequestState.Open, PullRequestState.Merged],
-      perPage: 10,
-    },
-    {
-      getNextPageParam: (lastPage) =>
-        lastPage?.pullRequests?.pageInfo?.endCursor,
-    },
-  );
+  const { data, fetchNextPage, isFetching } =
+    api.github.getPRList.useInfiniteQuery(
+      {
+        owner: ownerName,
+        repo: repoName,
+        states: [PullRequestState.Open, PullRequestState.Merged],
+        perPage: 100,
+      },
+      {
+        getNextPageParam: (lastPage) =>
+          lastPage?.pullRequests?.pageInfo?.endCursor,
+      },
+    );
 
   const prList = data?.pages.flatMap((page) => page?.pullRequests?.nodes ?? []);
-  console.log(prList);
 
   return (
     <div className="flex h-full flex-col gap-3 bg-gray-950 p-6">
@@ -37,8 +38,14 @@ export const PRListContainer = () => {
         </button>
       </div>
 
-      <PRList prList={prList} />
-      <PRReport prList={prList} />
+      <div
+        className={clsx("flex flex-1 flex-col overflow-hidden", {
+          "opacity-50": isFetching,
+        })}
+      >
+        <PRList prList={prList} />
+        <PRReport prList={prList} />
+      </div>
     </div>
   );
 };
