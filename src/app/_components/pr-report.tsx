@@ -141,6 +141,11 @@ const getPRCount = (pr: PullRequestFragment) => {
 const getRequestedCount = (pr: PullRequestFragment) => {
   if (!pr.timelineItems) return null;
 
+  const approved =
+    pr.reviews?.nodes?.map((node) => node?.author?.login).filter(Boolean) ?? [];
+
+  if (approved.length === 0) return null;
+
   return pr.timelineItems?.nodes
     ?.map((node) =>
       node?.__typename === "ReviewRequestedEvent" &&
