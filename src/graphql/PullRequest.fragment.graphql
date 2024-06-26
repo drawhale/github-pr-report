@@ -34,4 +34,18 @@ fragment PullRequest on PullRequest {
       createdAt
     }
   }
+
+  comments(last: 100) {
+    nodes {
+      author {
+        ... on User {
+          __typename
+          login
+        }
+      }
+      body
+      createdAt
+      url
+    }
+  }
 }

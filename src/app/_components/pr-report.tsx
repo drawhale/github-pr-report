@@ -7,6 +7,7 @@ type ReportData = {
   requestedCount?: number;
   approvedCountOfRequested?: number;
   approvedCount?: number;
+  commentCount?: number;
 };
 
 type Props = {
@@ -56,6 +57,7 @@ export const PRReport = ({ prList = [] }: Props) => {
                   label="Requested"
                   value={`${data.approvedCountOfRequested ?? 0} / ${data.requestedCount ?? 0}`}
                 />
+                <ValueItem label="Comments" value={data.commentCount ?? 0} />
               </div>
             </div>
           ))}
@@ -110,6 +112,7 @@ const getReportData = (prList: (PullRequestFragment | null)[]) => {
       getRequestedCount,
       getApprovedCountOfRequested,
       getApprovedCount,
+      getCommentCount,
     ];
 
     toDo.forEach((fn) => {
@@ -185,4 +188,16 @@ const getApprovedCount = (pr: PullRequestFragment) => {
     ?.map((node) => node?.author?.login)
     .filter(Boolean)
     .map((login) => [login, "approvedCount", 1] as const);
+};
+
+const getCommentCount = (pr: PullRequestFragment) => {
+  if (!pr.comments) return null;
+
+  return pr.comments.nodes
+    ?.filter((node) => node?.body !== undefined)
+    .map((node) =>
+      node?.author?.__typename === "User" ? node?.author?.login : null,
+    )
+    .filter(Boolean)
+    .map((login) => [login, "commentCount", 1] as const);
 };
